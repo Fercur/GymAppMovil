@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { ImageBackground, View } from 'react-native'
 import { styles } from '../themes/StylesGeneral'
 import { Button, Divider, FAB, Snackbar, Text, TextInput } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
+import { CommonActions, useNavigation } from '@react-navigation/native'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../configs/firebaseConfig'
 
 interface MessageSnackBar{
   visible: boolean,
@@ -38,8 +40,19 @@ export const Login = () => {
       return;
     }
     //Login usuarios
-    
+    try{
+      const response=await signInWithEmailAndPassword(
+        auth,loginForm.email,loginForm.password
+      );
+      console.log(response)
+    }catch(e){
+      console.log(e);
+      setmessageSnackBar({visible:true,message:"Nose se logró completar el ingreso intenter más tarde",color:"#962841"});
+    }
   }
+  const handlerSetLoginForm=(key:string,value:string)=>{
+    setloginForm({...loginForm,[key]:value})
+  };
   return (
     <ImageBackground
     source={require('../img/BackgroundStart.jpg')}
@@ -54,11 +67,15 @@ export const Login = () => {
                 label="Email"
                 style={styles.TIdatos}
                 mode='outlined'
+                onChangeText={(value)=>handlerSetLoginForm('email',value)}
              />
              <TextInput
                 label="Password"
                 style={styles.TIdatos}
                 mode='outlined'
+                secureTextEntry={hiddenPassword}
+                left={<TextInput.Icon icon="eye" onPress={()=>!hiddenPassword} />}
+                onChangeText={(value)=>handlerSetLoginForm('password',value)}
              />
         </View>
         <View>
@@ -66,7 +83,8 @@ export const Login = () => {
             <View style={styles.containerTextRedirect}>
                 <Text style={styles.textInfo}>¿No tienes una cuenta? </Text>
                 <Text
-                    style={styles.textNavigator}>
+                    style={styles.textNavigator}
+                    onPress={()=>navigation.dispatch(CommonActions.navigate({name:'Registro'}))}>
                     Regístrate ahora
                 </Text>
             </View>
@@ -75,7 +93,7 @@ export const Login = () => {
                 icon="send"
                 color='#fff'
                 style={styles.fab}
-                onPress={() => console.log('Pressed')}
+                onPress={() => handlerLogIn()}
                 mode='elevated'
             />
             </View>
@@ -85,7 +103,7 @@ export const Login = () => {
               style={{backgroundColor:messageSnackBar.color}}>
                 {messageSnackBar.message}
               </Snackbar>
-              
+
         </View>
         
      </View>

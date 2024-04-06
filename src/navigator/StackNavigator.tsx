@@ -1,9 +1,12 @@
-/*import React, { useEffect, useState } from 'react'
+import { createStackNavigator } from '@react-navigation/stack';
+import { useEffect, useState } from 'react'
 import { Login } from '../screens/Login'
 import { Registro } from '../screens/Registro'
 import { View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
-import { createStackNavigator } from '@react-navigation/stack';
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../configs/firebaseConfig'
+import { Home } from '../screens/Home';
 
 //Propiedades de las rutas 
 interface Routes{
@@ -11,8 +14,8 @@ interface Routes{
     screen:()=>JSX.Element
     headerShow?:boolean
 }
-const Stack=createStackNavigator()
-const StackNavigator = () => {
+const Stack=createStackNavigator();
+export const StackNavigator = () => {
     //controlar la carga inicial de screens
     const [isLoading, setisLoading] = useState(false)
     //verificar si se encuentra logeado
@@ -33,7 +36,7 @@ const StackNavigator = () => {
     ]
     //rutas para el usuario que esta autenticado
     const routeAuth:Routes[]=[
-
+        {name:"Home",screen:Home}
     ]
   return (
     <>
@@ -46,7 +49,7 @@ const StackNavigator = () => {
             {
                 !isAuth?
                 routeNoAuth.map((item,index)=>(
-                    <Stack.Screen key={index} name={item.name} options={{headerShown:item.headerShow ?? true}} component={item.screen}/>
+                    <Stack.Screen key={index} name={item.name} component={item.screen}/>
                 ))
                 :
                 routeAuth.map((item,index)=>(
@@ -58,5 +61,3 @@ const StackNavigator = () => {
     </>
   );
 }
-
-export default StackNavigator*/

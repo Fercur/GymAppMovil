@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { ImageBackground, View } from 'react-native'
 import { styles } from '../themes/StylesGeneral'
 import { Button, Divider, FAB, Snackbar, Text, TextInput } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
+import { CommonActions, useNavigation } from '@react-navigation/native'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../configs/firebaseConfig'
 
@@ -20,7 +20,7 @@ export const Registro = () => {
     //mostrar la contraseña
     const [hiddenPassword, sethiddenPassword] = useState(true)
     //navegacion
-    //const navigation=useNavigation()
+    const navigation=useNavigation()
     //pemrite trabajar con el estado del formulario
     const [registerForm, setregisterForm] = useState<RegisterForm>({
         email:"",
@@ -82,7 +82,8 @@ export const Registro = () => {
             <View style={styles.containerTextRedirect}>
                 <Text style={styles.textInfo}>¿Ya eres miembro? </Text>
                 <Text
-                    style={styles.textNavigator}>
+                    style={styles.textNavigator}
+                    onPress={()=>navigation.dispatch(CommonActions.navigate({name:'Login'}))}>
                     Inicia Sesión
                 </Text>
             </View>
