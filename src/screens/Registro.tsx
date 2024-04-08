@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useState } from 'react'
 import { ImageBackground, View } from 'react-native'
 import { styles } from '../themes/StylesGeneral'

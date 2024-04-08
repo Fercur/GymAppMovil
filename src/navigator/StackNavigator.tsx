@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect, useState } from 'react'
 import { Login } from '../screens/Login'
@@ -7,6 +8,9 @@ import { ActivityIndicator } from 'react-native-paper'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../configs/firebaseConfig'
 import { Home } from '../screens/Home';
+
+import { Form } from '../screens/Home/Form';
+import { Actualizacion } from '../screens/Home/Actualizacion';
 
 //Propiedades de las rutas 
 interface Routes{
@@ -36,7 +40,9 @@ export const StackNavigator = () => {
     ]
     //rutas para el usuario que esta autenticado
     const routeAuth:Routes[]=[
-        {name:"Home",screen:Home}
+        {name:"Home",screen:Home},
+        {name:"Formulario",screen:Form},
+        {name:"Actualizacion",screen:Actualizacion}
     ]
   return (
     <>
